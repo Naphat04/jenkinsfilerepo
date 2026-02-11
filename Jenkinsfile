@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // สั่ง Deploy ไป Vercel
-                vercel link --project $VERCEL_PROJECT_NAME --token $VERCEL_TOKEN --yes
+                sh "vercel link --project $VERCEL_PROJECT_NAME --token $VERCEL_TOKEN --yes"
                 sh "npx vercel --token ${VERCEL_TOKEN} --prod --yes"
                 echo 'Stage 4: Deploy passed!'
             }
