@@ -9,7 +9,7 @@ pipeline {
         
         
         // ดึง "กุญแจ" จาก Jenkins Credentials (ชื่อ ID ต้องตรงกัน)
-        VERCEL_PROJECT_NAME = 'Jenkins-Lab-Quiz'
+        VERCEL_PROJECT_NAME = 'jenkins-lab-quiz'
         VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID')
     }
 
