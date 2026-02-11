@@ -4,7 +4,7 @@ pipeline {
     VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID') // ดึงจาก Jenkins
   }
 
-  agent : any;
+  agent : any
 
   stages {
     stage('Test npm') {
