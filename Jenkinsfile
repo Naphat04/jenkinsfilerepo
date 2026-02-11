@@ -1,48 +1,46 @@
 pipeline {
+    agent any
+    
+    tools {
+        nodejs 'node20' // ต้องชื่อเดียวกับที่ตั้งใน Jenkins Tools
+    }
 
-    agent  any
+    environment {
+        // ดึง "กุญแจ" จาก Jenkins Credentials (ชื่อ ID ต้องตรงกัน)
+        VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID')
+    }
 
+    stages {
+        stage('Test npm') {
+            steps {
+                sh 'npm install'
+                sh 'node -v'
+                echo 'Stage 1: Test npm passed!'
+            }
+        }
 
-  environment {
-    VERCEL_PROJECT_NAME = 'learn-jenkins-app'
-    VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID') // ดึงจาก Jenkins
-  }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+                echo 'Stage 2: Build passed!'
+            }
+        }
 
-tools {
-    name "node20"
-}
+        stage('Test Build') {
+            steps {
+                // เช็คว่ามีโฟลเดอร์ผลลัพธ์การ Build จริงไหม
+                sh 'ls -al'
+                sh 'ls -R | grep -E "dist|build|.next"'
+                echo 'Stage 3: Test Build passed!'
+            }
+        }
 
-
-  stages {
-    stage('Test npm') {
-      steps {
-          sh 'npm --version'
-          sh 'node --version'
+        stage('Deploy') {
+            steps {
+                // สั่ง Deploy ไป Vercel
+                sh "npx vercel --token ${VERCEL_TOKEN} --prod --yes"
+                echo 'Stage 4: Deploy passed!'
+            }
         }
     }
-    stage('Build') {
-      steps {
-          sh 'npm ci'
-      }
-      
-    }
-    stage('Test Build') {
-      steps {
-          sh 'npm run test'
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-
-          sh 'npm install -g vercel@latest'
-          // Deploy using token-only (non-interactive)
-          sh '''
-            vercel link --project $VERCEL_PROJECT_NAME --token $VERCEL_TOKEN --yes
-            vercel --token $VERCEL_TOKEN --prod --confirm
-          '''
-      }
-    }
- 
-  }
 }
