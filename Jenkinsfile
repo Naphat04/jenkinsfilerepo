@@ -6,7 +6,10 @@ pipeline {
     }
 
     environment {
+        
+        
         // ดึง "กุญแจ" จาก Jenkins Credentials (ชื่อ ID ต้องตรงกัน)
+        VERCEL_PROJECT_NAME = 'Jenkins-Lab-Quiz'
         VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID')
     }
 
@@ -37,6 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // สั่ง Deploy ไป Vercel
+                vercel link --project $VERCEL_PROJECT_NAME --token $VERCEL_TOKEN --yes
                 sh "npx vercel --token ${VERCEL_TOKEN} --prod --yes"
                 echo 'Stage 4: Deploy passed!'
             }
