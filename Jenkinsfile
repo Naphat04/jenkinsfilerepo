@@ -8,6 +8,9 @@ pipeline {
     VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID') // ดึงจาก Jenkins
   }
 
+tools {
+    name "node20"
+}
 
 
   stages {
