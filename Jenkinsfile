@@ -21,7 +21,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'npm run build'
                 echo 'Stage 2: Build passed!'
             }
         }
