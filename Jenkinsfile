@@ -1,10 +1,14 @@
 pipeline {
+
+    agent  any
+
+
   environment {
     VERCEL_PROJECT_NAME = 'learn-jenkins-app'
     VERCEL_TOKEN = credentials('VERCEL_TOKEN_ID') // ดึงจาก Jenkins
   }
 
-  agent  {any}
+
 
   stages {
     stage('Test npm') {
